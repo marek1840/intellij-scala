@@ -56,7 +56,7 @@ object ScalaByExpectedTypeWeigher {
 
   import ScalaPsiUtil.undefineMethodTypeParams
 
-  private def computeType(element: PsiNamedElement, itemSubstitutor: ScSubstitutor)
+  private[completion] def computeType(element: PsiNamedElement, itemSubstitutor: ScSubstitutor)
                          (implicit place: PsiElement): Option[ScType] = {
     def substitution(scType: ScType,
                      substitutor: ScSubstitutor = ScSubstitutor.empty) = {
