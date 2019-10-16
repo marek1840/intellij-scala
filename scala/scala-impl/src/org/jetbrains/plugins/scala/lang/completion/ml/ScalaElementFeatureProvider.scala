@@ -5,7 +5,6 @@ import java.util
 import com.intellij.codeInsight.completion.CompletionLocation
 import com.intellij.codeInsight.completion.ml.{ContextFeatures, ElementFeatureProvider, MLFeatureValue}
 import com.intellij.codeInsight.lookup.LookupElement
-import com.intellij.codeInsight.template.impl.LiveTemplateLookupElement
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.NotNullLazyKey
 import com.intellij.psi.PsiElement
@@ -48,7 +47,6 @@ class ScalaElementFeatureProvider extends ElementFeatureProvider {
     val kind = PsiFeaturesUtil.kind(maybeElement).getOrElse {
       element.getObject match {
         case string: String if ScalaTokenTypes.KEYWORDS.getTypes.exists(_.toString == string) => ItemKind.KEYWORD
-        case _: LiveTemplateLookupElement => ItemKind.TEMPLATE
         case _ => ItemKind.UNKNOWN
       }
     }
@@ -61,7 +59,6 @@ class ScalaElementFeatureProvider extends ElementFeatureProvider {
     features.put("scala", MLFeatureValue.binary(scalaLookupItem.exists(_.element.isInstanceOf[ScalaPsiElement])))
     features.put("java_object_method", MLFeatureValue.binary(PsiFeaturesUtil.isJavaObjectMethod(maybeElement)))
     features.put("argument_count", MLFeatureValue.float(PsiFeaturesUtil.argumentCount(maybeElement)))
-    features.put("unit", MLFeatureValue.binary(typeWords sameElements Array("unit")))
     features.put("name_name_dist", MLFeatureValue.float(NameFeaturesUtil.wordsSimilarity(expectedNameWords, nameWords)))
     features.put("name_type_dist", MLFeatureValue.float(NameFeaturesUtil.wordsSimilarity(expectedNameWords, typeWords)))
     features.put("type_name_dist", MLFeatureValue.float(NameFeaturesUtil.wordsSimilarity(expectedTypeWords, typeWords)))
