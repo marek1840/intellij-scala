@@ -12,7 +12,7 @@ object Versions {
   val sbtIdeaShellVersion: String = "2018.3"
   val sbtIdeaCompilerIndicesVersion = "0.1.3"
   val scalaMetaVersion = "1.8.0"
-  val paradiseVersion = "3.0.0-M11"
+  val paradiseVersion = "2.1.1"
   val scalazVersion = "7.1.0"
 
   object Scala {
@@ -32,7 +32,7 @@ object Versions {
     val latest_3_0 = "0.15.0-RC1"
     val latest: String = latest_2_12
     /** Version used to build this project. Prefer latest_2_12 unless it causes problems. */
-    val project = "2.12.7"
+    val project = "2.12.10"
 
     def binaryVersion(v: String): String =
       if (v.startsWith("2.9")) binary_2_9
@@ -99,7 +99,7 @@ object Dependencies {
     "com.typesafe" % "config" % "1.2.1",
     "com.lihaoyi" %% "sourcecode" % "0.1.3"
   )
-  val macroParadise: ModuleID = "org.scalameta" % "paradise" % paradiseVersion cross CrossVersion.full
+  val macroParadise: ModuleID = "org.scalamacros" % "paradise" % paradiseVersion cross CrossVersion.full
   val scalaMetaCore: ModuleID = "org.scalameta" %% "scalameta" % scalaMetaVersion withSources() exclude("com.google.protobuf", "protobuf-java")
   val fastparse: ModuleID = "com.lihaoyi" % s"fastparse_$scalaBinaryVersion" % "0.4.3" // transitive dependency of scalaMeta, needs explicit versioning
 

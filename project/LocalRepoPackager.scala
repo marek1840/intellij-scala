@@ -31,6 +31,12 @@ object LocalRepoPackager {
   /** Download sbt plugin files to a local repo for both sbt 0.13 and 1.0 */
   private def downloadPathsToLocalRepo(remoteRepo: URI, localRepo: File, paths: Seq[String]): Seq[File] = {
 
+     /** Retrieves the content of the given URL and writes it to the given File. */
+     def download(url: URL, to: File) =
+       sbt.io.Using.urlInputStream(url) { inputStream =>
+         IO.transfer(inputStream, to)
+       }
+
     val emptyMD5 = "d41d8cd98f00b204e9800998ecf8427e"
 
     val downloadedArtifactFiles = paths.map { path =>
@@ -43,7 +49,7 @@ object LocalRepoPackager {
           IO.write(localFile, Array.empty[Byte])
         } else if (path.endsWith("-javadoc.jar.md5")) {
           IO.write(localFile, emptyMD5.getBytes(StandardCharsets.US_ASCII))
-        } else IO.download(downloadUrl, localFile)
+        } else download(downloadUrl, localFile)
       }
 
       localFile
